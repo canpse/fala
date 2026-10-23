@@ -1,0 +1,64 @@
+ler o readme
+mostra os arquivos daqui com tamanho e data
+mostra os arquivos ocultos também
+quanto espaço livre tem no disco
+qual o tamanho desta pasta
+procura arquivos maiores que 100 mega na home
+procura a palavra erro no log do app
+mostra as últimas 50 linhas do log e continua acompanhando
+conta as linhas do csv
+mostra as primeiras 10 linhas do csv
+renomeia notas.txt para anotacoes.txt
+copia o config.yaml para a pasta backup
+apaga todos os arquivos .pyc desta pasta e subpastas
+cria uma pasta chamada testes
+compacta a pasta src num tar.gz
+descompacta o antigo.tar.gz que está no backup
+dá permissão de execução ao main.py
+muda o dono do config.yaml para o usuário www-data
+mostra quanta memória ram está sendo usada
+quais processos estão usando mais cpu
+mata o processo que está usando a porta 8080
+qual a versão do kernel
+há quanto tempo o computador está ligado
+mostra as informações do processador
+lista os discos e partições
+roda o main.py
+instala o pacote htop
+atualiza todos os pacotes do sistema
+reinicia o serviço do nginx
+mostra o status do ssh
+mostra os erros do sistema desde o último boot
+mostra os logs do serviço docker da última hora
+qual o meu ip
+qual o meu ip público
+mostra as interfaces de rede
+qual é o gateway padrão
+testa se o google responde
+pinga o 192.168.1.1 só 4 vezes
+mostra o caminho até o 8.8.8.8
+resolve o dns de wikipedia.org
+qual o servidor dns que estou usando
+quais portas estão abertas escutando nesta máquina
+quem está conectado na porta 22
+testa se a porta 443 do github.com está aberta
+baixa o arquivo https://exemplo.com/arquivo.zip
+mostra só os cabeçalhos http de https://wikipedia.org
+escaneia os hosts ativos na rede 192.168.1.0/24
+conecta por ssh no root@192.168.1.50
+copia o dados.csv para o servidor 192.168.1.50 na pasta /tmp
+mostra as redes wifi disponíveis
+conecta na rede wifi Casa
+mostra a tabela arp
+captura os pacotes da interface enp3s0 na porta 53
+mostra a tabela de rotas
+adiciona uma rota para 10.0.0.0/8 via 192.168.1.1
+mostra as regras do firewall
+libera a porta 3000 no firewall
+mede a velocidade de download da internet
+qual o mac da interface wlp2s0
+desliga a interface enp3s0
+mostra o histórico de comandos com git
+faz commit de tudo com a mensagem atualiza notas
+mostra a diferença do último commit
+quais containers docker estão rodando
