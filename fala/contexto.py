@@ -1,5 +1,7 @@
 """O que vai pro modelo: prompt fixo + sistema lido na instalação, e por pedido a pasta e os pacotes."""
 import os
+import re
+import shutil
 import unicodedata
 from pathlib import Path
 
@@ -61,16 +63,43 @@ def arquivos(limite=80):
     return achados[:limite]
 
 
+# Programas do dia a dia que o modelo costuma achar que faltam. Conferir leva milissegundos,
+# então vai ao vivo a cada pedido (o reconhecimento da instalação pode estar velho ou nem existir).
+COMUNS = """
+pdfunite pdfseparate pdftotext pdftoppm qpdf pdftk gs ocrmypdf
+soffice libreoffice pandoc
+ffmpeg ffprobe sox lame flac opusenc yt-dlp
+magick convert identify exiftool cwebp
+unzip zip 7z 7za unrar tar gzip xz zstd bzip2
+rsync rclone trash-put fd rg fzf jq yq bat tree ncdu
+git gh docker podman flatpak snap
+apt dnf pacman zypper brew
+curl wget aria2c nc nmap dig ss ip mtr traceroute
+python3 node npm pip pipx uv go cargo java
+xdg-open notify-send wl-copy xclip
+""".split()
+
+
+def instalados():
+    return [p for p in COMUNS if shutil.which(p)]
+
+
 def pedido(texto, nomes_pacotes=()):
     return ("".join(exemplos(n) for n in nomes_pacotes)
             + f"Pasta atual: {os.getcwd()}\n"
+            + f"Programas instalados (dos comuns): {' '.join(instalados())}\n"
             + f"Arquivos (até 2 níveis): {' '.join(arquivos())}\n\n"
             + f"Pedido: {texto}")
 
 
 def limpar(resposta):
-    """Tira crases e linhas vazias, e caracteres que não existem (visto: U+4E180 colado no fim de um cp)."""
+    """O comando que veio entre <cmd></cmd>: sem pensamento, o modelo às vezes raciocina em voz alta
+    antes. Sem as marcas, tira crases e linhas vazias. Tira também caracteres que não existem
+    (visto: U+4E180 colado no fim de um cp)."""
     resposta = "".join(c for c in resposta
                        if unicodedata.category(c) not in ("Cn", "Co", "Cs") or c == "\n")
+    marcados = re.findall(r"<cmd>(.*?)</cmd>", resposta, re.S)
+    if marcados:
+        return marcados[-1].strip()
     linhas = [l for l in resposta.splitlines() if l.strip() and not l.startswith("```")]
     return "\n".join(linhas).strip()
