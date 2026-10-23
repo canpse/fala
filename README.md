@@ -5,6 +5,8 @@
 Say what you want, in plain language. `fa` puts the shell command on your prompt, you check
 it, and press Enter.
 
+![fa demo: merging PDFs, converting a document and audio, unzipping](https://raw.githubusercontent.com/canpse/fala/main/demo/fa-en.gif)
+
 ```
 $ fa show the 3 biggest files here
 fa> find . -type f -printf '%s %p\n' | sort -nr | head -3
@@ -94,7 +96,7 @@ fa --agente               instructions for AI agents
 
 ## Status
 
-Early (0.1.0). Tested on Fedora with bash; zsh support is written but not yet tested.
+Early (0.1.1). Tested on Fedora with bash; zsh support is written but not yet tested.
 Built-in instructions and messages are in Portuguese; requests work in any language. The
 tests are in [testes/](testes/).
 

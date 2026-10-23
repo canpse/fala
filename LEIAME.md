@@ -5,6 +5,8 @@
 Diga o que você quer, do seu jeito. O `fa` põe o comando na linha do terminal, você confere
 e dá Enter.
 
+![demonstração do fa: juntar PDFs, converter documento e áudio, descompactar](https://raw.githubusercontent.com/canpse/fala/main/demo/fa-pt.gif)
+
 ```
 $ fa quem está escutando na porta 8080
 fa> sudo ss -ltnp 'sport = :8080'
@@ -93,7 +95,7 @@ fa --agente               instruções pra agentes de IA
 
 ## Estado
 
-Começo (0.1.0). Testado no Fedora com bash; o zsh está escrito mas ainda não foi testado. Os
+Começo (0.1.1). Testado no Fedora com bash; o zsh está escrito mas ainda não foi testado. Os
 testes estão em [testes/](testes/).
 
 ## Licença

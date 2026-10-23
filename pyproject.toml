@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fala"
-version = "0.1.0"
+version = "0.1.1"
 description = "Say what you want in plain language; fa puts the shell command on your prompt to check and run."
 readme = "README.md"
 license = "MIT"
