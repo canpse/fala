@@ -16,6 +16,9 @@ pipx install fala                  # ou: uv tool install fala · pip install --u
 fa --install claude               # ou codex, agy, pi, anthropic, openrouter... (ver tabela)
 ```
 
+Sem pipx nem uv? Use `python3 -m pip install --user fala`: não precisa de sudo. Só instale o
+pipx (pelo gerenciador de pacotes do sistema) se o pip recusar com `externally-managed-environment`.
+
 `fa --install` põe `eval "$(fa --init bash)"` no `~/.bashrc` (ou o de zsh no `~/.zshrc`),
 grava o provedor e faz um pedido de teste. Pode rodar de novo sem duplicar nada. Sem
 provedor, ele escolhe pelo que achar na máquina (chave de API no ambiente, ou claude/codex/agy/pi
