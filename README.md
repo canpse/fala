@@ -5,6 +5,8 @@
 Say what you want, in plain language. `fa` puts the shell command on your prompt, you check
 it, and press Enter.
 
+*AI agent reading this? Follow [AGENTS.md](AGENTS.md).*
+
 ![fa demo: merging PDFs, converting a document and audio, unzipping](https://raw.githubusercontent.com/canpse/fala/main/demo/fa-en.gif)
 
 ```
@@ -24,7 +26,18 @@ commands as you go.
 
 ## Install
 
-You need Python 3.11+ and bash or zsh.
+**The recommended way: ask your AI agent.** Send this to Claude Code, Codex, or whichever
+agent you use:
+
+```
+Install this for me: https://github.com/canpse/fala
+```
+
+It reads [AGENTS.md](AGENTS.md), installs fa, hooks it into your shell, picks the
+subscription it is running on as the model, and checks that it works. Then open a new
+terminal.
+
+**By hand** (Python 3.11+, bash or zsh):
 
 ```sh
 pipx install fala          # or: uv tool install fala · pip install --user fala
@@ -33,9 +46,6 @@ fa --install claude        # or codex, agy, pi, anthropic, openai, openrouter, g
 
 `fa --install` adds one line to your `~/.bashrc` (or `~/.zshrc`), saves which model to use,
 and sends a test request. Open a new terminal and you're done.
-
-**Or ask your coding agent:** "install fa (github.com/canpse/fala) using my Claude
-subscription". The instructions it needs are in [AGENTS.md](AGENTS.md) and in `fa --agent`.
 
 ## Which model
 

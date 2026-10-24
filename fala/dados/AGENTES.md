@@ -5,6 +5,10 @@ O `fa` (pacote `fala`) transforma um pedido em linguagem natural num comando de 
 pessoa confere e dá Enter. Se te pediram para instalar ou configurar o fa, siga isto.
 Estas instruções também saem com `fa --agent` (em inglês em AGENTS.md).
 
+O jeito recomendado de instalar o fa é exatamente este: a pessoa te passa o link do
+repositório e pede para instalar. Então você pode receber só "instala isso" e um link. Basta:
+siga os passos abaixo sem perguntar nada que você consiga descobrir sozinho.
+
 ## 1. Instalar: dois comandos
 
 ```sh
@@ -19,6 +23,15 @@ instalado). Termina com `ok: ...` quando funcionou; senão diz o que falta, por 
 `o claude falhou: Not logged in`: aí peça à pessoa para entrar no programa (`claude`, depois
 `/login`) e rode de novo. Precisa de Python 3.11 ou mais novo. A integração só vale em
 terminal aberto depois: avise a pessoa para abrir um novo (ou `source ~/.bashrc`).
+
+**Qual provedor, se a pessoa não disse:** prefira a assinatura em que você mesmo está
+rodando, que ela já tem e já está logada: Claude Code → `claude`, Codex → `codex`,
+Antigravity → `agy`, pi → `pi`. Senão, uma chave de API que já esteja no ambiente. Só pergunte
+à pessoa se nenhuma das duas servir.
+
+**Quando terminar**, diga à pessoa em duas linhas: abrir um terminal novo e testar algo como
+`fa mostra os 5 maiores arquivos daqui`. Depois ofereça o `fa --scan` (seção 4), explicando o
+que ele manda, e só rode se ela concordar.
 
 Para que serve cada provedor, ou para ajustar depois, veja a seção 2.
 

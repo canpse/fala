@@ -23,7 +23,18 @@ e o comando vão pro histórico, então você aprende os comandos usando.
 
 ## Instalar
 
-Precisa de Python 3.11 ou mais novo e de bash ou zsh.
+**O jeito recomendado: peça ao seu agente de IA.** Mande isto pro Claude Code, pro Codex ou
+pro agente que você usa:
+
+```
+Instala isso pra mim: https://github.com/canpse/fala
+```
+
+Ele lê o [AGENTS.md](AGENTS.md), instala o fa, liga no seu shell, escolhe como modelo a
+assinatura em que ele mesmo está rodando e confere se funciona. Depois é só abrir um terminal
+novo.
+
+**À mão** (Python 3.11+, bash ou zsh):
 
 ```sh
 pipx install fala          # ou: uv tool install fala · pip install --user fala
@@ -32,9 +43,6 @@ fa --install claude        # ou codex, agy, pi, anthropic, openai, openrouter, g
 
 O `fa --install` põe uma linha no `~/.bashrc` (ou no `~/.zshrc`), grava qual modelo usar e
 faz um pedido de teste. Abra um terminal novo e pronto.
-
-**Ou peça ao seu agente:** "instala o fa (github.com/canpse/fala) usando minha assinatura do
-Claude". As instruções que ele precisa estão no [AGENTS.md](AGENTS.md) e em `fa --agent`.
 
 ## Qual modelo
 

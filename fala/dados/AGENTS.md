@@ -5,6 +5,11 @@
 person checks it and presses Enter. If you were asked to install or configure fa, follow this.
 These instructions are also printed by `fa --agent`.
 
+The recommended way to install fa is exactly this: the person gives you the link to this
+repository and asks you to install it. So you may get nothing more than "install this" and a
+link. That is enough: follow the steps below without asking anything you can find out
+yourself.
+
 ## 1. Install: two commands
 
 ```sh
@@ -20,6 +25,15 @@ is missing, for example `claude failed: Not logged in`: then ask the person to l
 program (`claude`, then `/login`) and run it again. Needs Python 3.11 or newer. The
 integration only applies to terminals opened afterwards: tell the person to open a new one
 (or `source ~/.bashrc`).
+
+**Which provider, when the person didn't say:** prefer the subscription you are running on,
+since the person already has it and it is logged in: Claude Code → `claude`, Codex → `codex`,
+Antigravity → `agy`, pi → `pi`. Otherwise use an API key that is already in the environment.
+Only ask the person if neither works.
+
+**When it's done**, tell the person in two lines: open a new terminal, and try something like
+`fa show the 5 biggest files here`. Then offer `fa --scan` (section 4), explaining what it
+sends, and run it only if they agree.
 
 For what each provider is, or to adjust things later, see section 2.
 
