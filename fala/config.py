@@ -5,6 +5,8 @@ import shutil
 import tomllib
 from pathlib import Path
 
+from .idioma import t
+
 PASTA = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "fa"
 ARQUIVO = PASTA / "config.toml"
 CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "fa"
@@ -22,24 +24,24 @@ ASSINATURAS = ("claude", "codex", "agy")
 PROVEDORES = ("anthropic", *COMPAT, "compat", "pi", *ASSINATURAS)
 
 MODELO = """\
-# fa (pacote fala): qual modelo traduz o pedido em comando.
-# provedor: anthropic | openai | openrouter | groq | ollama | compat | pi | claude | codex | agy
-provedor = "{provedor}"
-{modelo}
-# compat = qualquer API no formato da OpenAI (llama.cpp, vLLM, LM Studio...):
+# fa (package fala): which model turns your request into a command.
+# provider: anthropic | openai | openrouter | groq | ollama | compat | pi | claude | codex | agy
+provider = "{provider}"
+{model}
+# compat = any OpenAI-compatible API (llama.cpp, vLLM, LM Studio...):
 # url = "http://localhost:8080/v1"
-# chave_env = "MINHA_CHAVE"    # nome da variável de ambiente com a chave (a chave não fica aqui)
+# key_env = "MY_KEY"    # name of the environment variable holding the key (the key never goes here)
 
-# pi = usa o pi (https://github.com/badlogic/pi-mono) com o login que ele já tem.
-# Sem pi_provedor/modelo, vale o padrão do próprio pi. Mais rápido com: fa --servico
-# pi_provedor = "openai-codex"
-# pensamento = "off"
+# pi = uses pi (https://github.com/badlogic/pi-mono) with the login it already has.
+# Without pi_provider/model, pi's own defaults apply. Faster with: fa --service
+# pi_provider = "openai-codex"
+# thinking = "off"
 
-# claude, codex, agy = usa a assinatura pelo programa oficial já logado (sem chave de API).
-# modelo e pensamento são os do próprio programa (claude: haiku · codex: gpt-6-luna, low · agy: gemini-3.8-flash-low)
+# claude, codex, agy = use your subscription through the official CLI, already logged in (no API key).
+# model and thinking are the program's own (claude: haiku · codex: gpt-6-luna, low · agy: gemini-3.8-flash-low)
 
-# segundos até desistir de uma resposta
-# tempo_limite = 30
+# seconds before giving up on an answer
+# timeout = 30
 """
 
 
@@ -52,38 +54,50 @@ def adivinhar():
     for nome, var in (("anthropic", ANTHROPIC[1]), ("openai", "OPENAI_API_KEY"),
                       ("openrouter", "OPENROUTER_API_KEY"), ("groq", "GROQ_API_KEY")):
         if os.environ.get(var):
-            cfg = {"provedor": nome}
+            cfg = {"provider": nome}
             if nome == "openrouter" and os.environ.get("OPENROUTER_MODEL"):
-                cfg["modelo"] = os.environ["OPENROUTER_MODEL"]
+                cfg["model"] = os.environ["OPENROUTER_MODEL"]
             return cfg
     for cli in ("pi", *ASSINATURAS):  # do mais rápido pro mais lento
         if shutil.which(cli):
-            return {"provedor": cli}
+            return {"provider": cli}
     return None
+
+
+CHAVES = {"provider": str, "model": str, "url": str, "key_env": str,
+          "pi_provider": str, "thinking": str, "timeout": int}
+# nomes da 0.1.x, em português: continuam valendo e viram os novos na próxima gravação
+ANTIGAS = {"provedor": "provider", "modelo": "model", "chave_env": "key_env",
+           "pi_provedor": "pi_provider", "pensamento": "thinking", "tempo_limite": "timeout"}
+
+
+def _novas(cfg):
+    return {ANTIGAS.get(k, k): v for k, v in cfg.items()}
+
+
+def _conferir(cfg):
+    if cfg.get("provider") not in PROVEDORES:
+        raise Erro(t(f"provider {cfg.get('provider')!r} does not exist (use one of: {', '.join(PROVEDORES)})",
+                     f"provedor {cfg.get('provider')!r} não existe (use um de: {', '.join(PROVEDORES)})"))
 
 
 def carregar():
     if ARQUIVO.exists():
         try:
-            cfg = tomllib.loads(ARQUIVO.read_text())
+            cfg = _novas(tomllib.loads(ARQUIVO.read_text()))
         except tomllib.TOMLDecodeError as e:
-            raise Erro(f"{ARQUIVO} com erro: {e}")
+            raise Erro(t(f"error in {ARQUIVO}: {e}", f"{ARQUIVO} com erro: {e}"))
     else:
         cfg = adivinhar()
         if cfg is None:
-            raise Erro("nenhum modelo configurado. Rode: fa --config")
-    if cfg.get("provedor") not in PROVEDORES:
-        raise Erro(f"provedor {cfg.get('provedor')!r} não existe (use um de: {', '.join(PROVEDORES)})")
-    cfg.setdefault("tempo_limite", 30)
+            raise Erro(t("no model configured. Run: fa --install", "nenhum modelo configurado. Rode: fa --install"))
+    _conferir(cfg)
+    cfg.setdefault("timeout", 30)
     return cfg
 
 
-CHAVES = {"provedor": str, "modelo": str, "url": str, "chave_env": str,
-          "pi_provedor": str, "pensamento": str, "tempo_limite": int}
-
-
 def escrever(cfg):
-    linhas = ["# fa (pacote fala). Opções: fa --agente. Mude com: fa --config chave=valor"]
+    linhas = ["# fa (package fala). Options: fa --agent. Change with: fa --config key=value"]
     for chave in CHAVES:
         if chave in cfg:
             v = cfg[chave]
@@ -95,39 +109,40 @@ def escrever(cfg):
 
 def ajustar(pares):
     """fa --config chave=valor ...: muda só essas chaves. Trocar de provedor apaga as do provedor antigo."""
-    atual = tomllib.loads(ARQUIVO.read_text()) if ARQUIVO.exists() else {}
+    atual = _novas(tomllib.loads(ARQUIVO.read_text())) if ARQUIVO.exists() else {}
     novo = {}
     for par in pares:
         chave, sep, valor = par.partition("=")
+        chave = ANTIGAS.get(chave, chave)
         if not sep or chave not in CHAVES:
-            raise Erro(f"{par!r}: use chave=valor, com chave entre: {', '.join(CHAVES)}")
+            raise Erro(t(f"{par!r}: use key=value, with key one of: {', '.join(CHAVES)}",
+                         f"{par!r}: use chave=valor, com chave entre: {', '.join(CHAVES)}"))
         if CHAVES[chave] is int:
             try:
                 valor = int(valor)
             except ValueError:
-                raise Erro(f"{chave} precisa ser um número")
+                raise Erro(t(f"{chave} must be a number", f"{chave} precisa ser um número"))
         novo[chave] = valor
-    if "provedor" in novo and novo["provedor"] != atual.get("provedor"):
+    if "provider" in novo and novo["provider"] != atual.get("provider"):
         atual = {}
     cfg = {k: v for k, v in {**atual, **novo}.items() if v != ""}  # chave= (vazio) apaga
-    if cfg.get("provedor") not in PROVEDORES:
-        raise Erro(f"provedor {cfg.get('provedor')!r} não existe (use um de: {', '.join(PROVEDORES)})")
+    _conferir(cfg)
     escrever(cfg)
 
 
 def criar():
     """Escreve o config.toml com o palpite desta máquina. Devolve o texto escrito."""
-    cfg = adivinhar() or {"provedor": "anthropic"}
-    p = cfg["provedor"]
-    if cfg.get("modelo"):
-        modelo = f'modelo = "{cfg["modelo"]}"'
+    cfg = adivinhar() or {"provider": "anthropic"}
+    p = cfg["provider"]
+    if cfg.get("model"):
+        modelo = f'model = "{cfg["model"]}"'
     elif p == "anthropic":
-        modelo = f'modelo = "{ANTHROPIC[2]}"'
+        modelo = f'model = "{ANTHROPIC[2]}"'
     elif p in ("pi", *ASSINATURAS):
-        modelo = '# modelo = ""    # vazio = o padrão do programa'
+        modelo = '# model = ""    # empty = the program\'s default'
     else:
-        modelo = 'modelo = ""    # obrigatório: o nome do modelo nesse provedor'
-    texto = MODELO.format(provedor=p, modelo=modelo)
+        modelo = 'model = ""    # required: the model name at this provider'
+    texto = MODELO.format(provider=p, model=modelo)
     PASTA.mkdir(parents=True, exist_ok=True)
     ARQUIVO.write_text(texto)
     return texto

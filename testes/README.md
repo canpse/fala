@@ -11,5 +11,6 @@ conferida à mão. Modelo: GPT-6 Luna sem raciocínio (provedor `pi`), Fedora 44
 | 2 | sistema + 2 níveis de arquivos + regras no prompt | 63 |
 | 4 | reconhecimento da máquina (`fa --reconhecer`) e regra de caminho relativo | 62 (1 meio certo, 1 errado) |
 | 5 | os 28 pedidos de rede com `-r` (pacote de exemplos de redes) | 28 de 28 |
+| 6 | prompt e rótulos do contexto em inglês (0.2.0), pedidos ainda em português | 61 (2 meio certos: "arquivos com tamanho e data" só listou arquivos de até 2 níveis, "conecta na rede wifi Casa" usou `connection up`; 1 errado: "histórico de comandos com git" virou `git log`) |
 
 Tempo médio: 1,8 s por pedido.

@@ -18,14 +18,20 @@ def sistema():
     return texto
 
 
+# Pastas de packs: os que vêm com o fa e os da pessoa. "pacotes" e "redes" são os nomes da 0.1.x.
+PASTAS_PACKS = (DADOS / "packs", PASTA / "packs", PASTA / "pacotes")
+ANTIGOS = {"redes": "network"}
+
+
 def pacotes():
-    """{letra: nome}. Um pacote é um .txt com a linha '# flag: x', no fa ou em ~/.config/fa/pacotes."""
+    """{letra: nome}. Um pack é um .txt com a linha '# flag: x' (ou '# flag: x y', a 1ª é a que aparece na ajuda)."""
     achados = {}
-    for pasta in (DADOS / "pacotes", PASTA / "pacotes"):
+    for pasta in PASTAS_PACKS:
         for f in sorted(pasta.glob("*.txt")):
             for linha in f.read_text().splitlines():
                 if linha.startswith("# flag: "):
-                    achados.setdefault(linha[8:].strip(), f.stem)
+                    for letra in linha[8:].split():
+                        achados.setdefault(letra, ANTIGOS.get(f.stem, f.stem))
     return achados
 
 
@@ -35,12 +41,15 @@ def _linhas(f):
 
 def exemplos(nome):
     texto = ""
-    comum, local = DADOS / "pacotes" / f"{nome}.txt", PASTA / "pacotes" / f"{nome}.txt"
+    antigo = next((a for a, n in ANTIGOS.items() if n == nome), None)
+    comum = DADOS / "packs" / f"{nome}.txt"
+    local = next((f for f in (PASTA / "packs" / f"{nome}.txt", PASTA / "pacotes" / f"{nome}.txt",
+                              PASTA / "pacotes" / f"{antigo}.txt") if f.exists()), None)
     if comum.exists():
-        texto += (f"Exemplos comuns do pacote {nome} (pedido => comando; adapte ao pedido, não copie se não servir):\n"
+        texto += (f"Common examples from the {nome} pack (request => command; adapt them, don't copy one that doesn't fit):\n"
                   + "\n".join(_linhas(comum)) + "\n\n")
-    if local.exists():
-        texto += (f"Exemplos do pacote {nome} DESTA máquina (quando contradizem os comuns, valem estes):\n"
+    if local:
+        texto += (f"Examples from the {nome} pack for THIS machine (when they contradict the common ones, these win):\n"
                   + "\n".join(_linhas(local)) + "\n\n")
     return texto
 
@@ -86,10 +95,10 @@ def instalados():
 
 def pedido(texto, nomes_pacotes=()):
     return ("".join(exemplos(n) for n in nomes_pacotes)
-            + f"Pasta atual: {os.getcwd()}\n"
-            + f"Programas instalados (dos comuns): {' '.join(instalados())}\n"
-            + f"Arquivos (até 2 níveis): {' '.join(arquivos())}\n\n"
-            + f"Pedido: {texto}")
+            + f"Current folder: {os.getcwd()}\n"
+            + f"Installed programs (of the common ones): {' '.join(instalados())}\n"
+            + f"Files (up to 2 levels): {' '.join(arquivos())}\n\n"
+            + f"Request: {texto}")
 
 
 def limpar(resposta):

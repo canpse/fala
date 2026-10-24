@@ -11,7 +11,7 @@ Set WindowBar Colorful
 Set TypingSpeed 40ms
 
 Hide
-Type "source demo/ambiente.sh /tmp/project" Enter
+Type "export LANG=en_US.UTF-8; source demo/ambiente.sh /tmp/project" Enter
 Sleep 500ms
 Show
 
@@ -52,5 +52,5 @@ Sleep 3s
 Hide
 Type "clear" Enter
 Show
-Type "# pipx install fala && fa --instalar claude"
+Type "# pipx install fala && fa --install claude"
 Sleep 3.5s

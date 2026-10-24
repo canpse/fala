@@ -1,0 +1,32 @@
+# flag: n r
+# Network pack: common examples (any machine). Use with: fa -n <request>
+# Format: request => command. Examples for your own machine go in ~/.config/fa/packs/network.txt.
+show a sample of captured packets => sudo tcpdump -i <active interface> -c 20 -nn
+capture only dns traffic => sudo tcpdump -i <active interface> -nn port 53
+capture traffic from one ip => sudo tcpdump -i <active interface> -nn host 192.168.1.10
+save the capture to a file => sudo tcpdump -i <active interface> -w capture.pcap
+read a saved capture => tcpdump -nn -r capture.pcap | head -50
+show interfaces and ips => ip -br addr
+what is my ip => ip -br addr show <active interface>
+what is my public ip => curl -s https://api.ipify.org; echo
+what is the gateway => ip route show default
+show the routing table => ip route
+which way does a packet to an ip go => ip route get 8.8.8.8
+show the arp table => ip neigh
+which ports are listening => sudo ss -tulnp
+who is connected to this machine => ss -tnp state established
+which program is using port 8080 => sudo ss -tlnp 'sport = :8080'
+check if a remote port is open => nc -vz -w 5 host 443
+ping a host 4 times => ping -c 4 host
+show the path to a host => tracepath host
+measure loss and latency along the path => mtr -rwc 20 host
+resolve a name => dig +short name
+resolve with a specific dns server => dig @1.1.1.1 +short name
+which dns am i using => resolvectl dns
+show a site's http headers => curl -sI https://site
+how long each step of a request takes => curl -o /dev/null -s -w 'dns %{time_namelookup}s connect %{time_connect}s tls %{time_appconnect}s total %{time_total}s\n' https://site
+find the live hosts on the network => sudo nmap -sn 192.168.1.0/24
+list wifi networks => nmcli device wifi list
+show networkmanager connections => nmcli connection show
+bring a connection up => nmcli connection up <name>
+traffic per interface now => ip -s link

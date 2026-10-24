@@ -21,12 +21,12 @@ LIMITE = 60  # segundos por pedido
 def argumentos(cfg, sistema):
     """Opções do pi comuns ao modo rpc e ao pi -p: sem ferramentas, sem sessão, só o prompt do fa."""
     args = []
-    if cfg.get("pi_provedor"):
-        args += ["--provider", cfg["pi_provedor"]]
-    if cfg.get("modelo"):
-        args += ["--model", cfg["modelo"]]
-    if cfg.get("pensamento"):
-        args += ["--thinking", cfg["pensamento"]]
+    if cfg.get("pi_provider"):
+        args += ["--provider", cfg["pi_provider"]]
+    if cfg.get("model"):
+        args += ["--model", cfg["model"]]
+    if cfg.get("thinking"):
+        args += ["--thinking", cfg["thinking"]]
     return args + ["--no-tools", "--no-session", "--no-context-files", "--no-extensions",
                    "--no-skills", "--no-prompt-templates", "--offline", "--system-prompt", sistema]
 

@@ -1,12 +1,12 @@
-# fa no bash: o comando aparece na linha pra conferir; Enter executa, apagar a linha (ou Ctrl+C) cancela.
-# Carregue com: eval "$(fa --init bash)"
+# fa for bash: the command shows up on your prompt to check; Enter runs it, erasing the line (or Ctrl+C) cancels.
+# Load with: eval "$(fa --init bash)"
 fa() {
     case "${1:-}" in
         ""|-h|--*) command fa "$@"; return ;;
     esac
     local cmd linha
-    printf '\e[2mpensando…\e[0m' >&2
-    cmd=$(command fa --traduzir "$@") || return
+    printf '\e[2m@THINKING@\e[0m' >&2
+    cmd=$(command fa --translate "$@") || return
     printf '\r\e[K' >&2
     read -e -r -i "$cmd" -p $'\e[33mfa>\e[0m ' linha || { echo; return 130; }
     [ -z "$linha" ] && return 0

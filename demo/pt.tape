@@ -52,5 +52,5 @@ Sleep 3s
 Hide
 Type "clear" Enter
 Show
-Type "# pipx install fala && fa --instalar claude"
+Type "# pipx install fala && fa --install claude"
 Sleep 3.5s

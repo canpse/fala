@@ -27,14 +27,14 @@ Precisa de Python 3.11 ou mais novo e de bash ou zsh.
 
 ```sh
 pipx install fala          # ou: uv tool install fala · pip install --user fala
-fa --instalar claude       # ou codex, agy, pi, anthropic, openai, openrouter, groq, ollama
+fa --install claude        # ou codex, agy, pi, anthropic, openai, openrouter, groq, ollama
 ```
 
-O `fa --instalar` põe uma linha no `~/.bashrc` (ou no `~/.zshrc`), grava qual modelo usar e
+O `fa --install` põe uma linha no `~/.bashrc` (ou no `~/.zshrc`), grava qual modelo usar e
 faz um pedido de teste. Abra um terminal novo e pronto.
 
 **Ou peça ao seu agente:** "instala o fa (github.com/canpse/fala) usando minha assinatura do
-Claude". As instruções que ele precisa estão no [AGENTS.md](AGENTS.md) e em `fa --agente`.
+Claude". As instruções que ele precisa estão no [AGENTS.md](AGENTS.md) e em `fa --agent`.
 
 ## Qual modelo
 
@@ -51,10 +51,10 @@ comando.
 | `openai`, `openrouter`, `groq` | as APIs deles | `OPENAI_API_KEY`, `OPENROUTER_API_KEY`, `GROQ_API_KEY` |
 | `ollama`, `compat` | modelo local, ou qualquer API no formato da OpenAI (llama.cpp, vLLM, LM Studio) | opcional |
 
-Tempo por pedido num notebook de 4 núcleos: `pi` com `fa --servico` 1,6 s, `claude` (Haiku)
+Tempo por pedido num notebook de 4 núcleos: `pi` com `fa --service` 1,6 s, `claude` (Haiku)
 3,1 s, `codex` (GPT-6 Luna, low) 4,8 s, `agy` (Gemini 3.8 Flash Low) 6,3 s.
 
-Pra trocar: `fa --config provedor=codex modelo=gpt-6-luna`. Pra conferir: `fa --testar`.
+Pra trocar: `fa --config provider=codex model=gpt-6-luna`. Pra conferir: `fa --test`.
 Chave de API fica em variável de ambiente, nunca no arquivo de configuração.
 
 **Sobre as assinaturas:** `claude`, `codex` e `agy` rodam o programa oficial que você mesmo
@@ -67,36 +67,38 @@ equipe, servidor ou produto, use chave de API.
 Cada pedido manda: as instruções fixas, o caminho da pasta atual, os nomes dos arquivos dela
 (dois níveis, até 80) e o pedido. O conteúdo dos arquivos nunca vai.
 
-O `fa --reconhecer` é opcional e melhora bastante as respostas: ele lê uma vez a distribuição,
+O `fa --scan` é opcional e melhora bastante as respostas: ele lê uma vez a distribuição,
 as ferramentas, as interfaces de rede e os serviços rodando, grava em
 `~/.config/fa/sistema.txt`, e esse arquivo vai junto com **todo** pedido. Inclui o hostname e
 os IPs locais. Leia ou edite antes de usar um provedor em que você não confia.
 
-## Pacotes de exemplos
+## Packs de exemplos
 
-`fa -r <pedido>` junta exemplos de rede ao pedido (`fa -h` lista os pacotes). Um pacote é um
+`fa -n <pedido>` junta exemplos de rede ao pedido (`fa -h` lista os packs). Um pack é um
 arquivo de texto com linhas `pedido => comando` e uma linha `# flag: x`. Os seus vão em
-`~/.config/fa/pacotes/`: é ali que você ensina ao `fa` os servidores, as interfaces e os
+`~/.config/fa/packs/`: é ali que você ensina ao `fa` os servidores, as interfaces e os
 costumes da sua máquina.
 
 ## Comandos
 
 ```
 fa <pedido>               comando na linha, Enter executa
-fa -r <pedido>            com o pacote de redes
-fa --instalar [provedor]  liga no shell, escolhe o provedor e testa
+fa -n <pedido>            com o pack de redes
+fa --install [provedor]   liga no shell, escolhe o provedor e testa
 fa --config chave=valor   muda a configuração · fa --config mostra
-fa --testar               mostra o que está valendo e faz um pedido de teste
-fa --reconhecer           lê esta máquina uma vez, pra respostas melhores
-fa --servico              deixa o pi aberto como serviço do systemd (provedor pi)
-fa --traduzir <pedido>    só imprime o comando
-fa --agente               instruções pra agentes de IA
+fa --test                 mostra o que está valendo e faz um pedido de teste
+fa --scan                 lê esta máquina uma vez, pra respostas melhores
+fa --service              deixa o pi aberto como serviço do systemd (provedor pi)
+fa --translate <pedido>   só imprime o comando
+fa --agent                instruções pra agentes de IA
 ```
 
 ## Estado
 
-Começo (0.1.1). Testado no Fedora com bash; o zsh está escrito mas ainda não foi testado. Os
-testes estão em [testes/](testes/).
+Começo (0.2.0). Testado no Fedora com bash; o zsh está escrito mas ainda não foi testado. Os
+testes estão em [testes/](testes/). Pedidos em qualquer idioma; as mensagens saem em português
+quando o sistema está em português. Os nomes da 0.1 (`--instalar`, `provedor=`...) continuam
+valendo.
 
 ## Licença
 

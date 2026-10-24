@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fala"
-version = "0.1.1"
+version = "0.2.0"
 description = "Say what you want in plain language; fa puts the shell command on your prompt to check and run."
 readme = "README.md"
 license = "MIT"
@@ -34,4 +34,4 @@ fa = "fala.cli:main"
 packages = ["fala"]
 
 [tool.setuptools.package-data]
-fala = ["dados/*", "dados/pacotes/*"]
+fala = ["dados/*", "dados/packs/*"]

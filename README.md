@@ -28,14 +28,14 @@ You need Python 3.11+ and bash or zsh.
 
 ```sh
 pipx install fala          # or: uv tool install fala · pip install --user fala
-fa --instalar claude       # or codex, agy, pi, anthropic, openai, openrouter, groq, ollama
+fa --install claude        # or codex, agy, pi, anthropic, openai, openrouter, groq, ollama
 ```
 
-`fa --instalar` adds one line to your `~/.bashrc` (or `~/.zshrc`), saves which model to use,
+`fa --install` adds one line to your `~/.bashrc` (or `~/.zshrc`), saves which model to use,
 and sends a test request. Open a new terminal and you're done.
 
 **Or ask your coding agent:** "install fa (github.com/canpse/fala) using my Claude
-subscription". The instructions it needs are in [AGENTS.md](AGENTS.md) and in `fa --agente`.
+subscription". The instructions it needs are in [AGENTS.md](AGENTS.md) and in `fa --agent`.
 
 ## Which model
 
@@ -52,10 +52,10 @@ command.
 | `openai`, `openrouter`, `groq` | their APIs | `OPENAI_API_KEY`, `OPENROUTER_API_KEY`, `GROQ_API_KEY` |
 | `ollama`, `compat` | a local model, or any OpenAI-compatible API (llama.cpp, vLLM, LM Studio) | optional |
 
-Time per request measured on a 4-core laptop: `pi` with `fa --servico` 1.6 s, `claude` (Haiku)
+Time per request measured on a 4-core laptop: `pi` with `fa --service` 1.6 s, `claude` (Haiku)
 3.1 s, `codex` (GPT-6 Luna, low) 4.8 s, `agy` (Gemini 3.8 Flash Low) 6.3 s.
 
-Change it any time: `fa --config provedor=codex modelo=gpt-6-luna`. Check it: `fa --testar`.
+Change it any time: `fa --config provider=codex model=gpt-6-luna`. Check it: `fa --test`.
 API keys stay in environment variables, never in the config file.
 
 **About subscriptions:** `claude`, `codex` and `agy` run the official program you installed
@@ -68,36 +68,37 @@ server or a product, use an API key.
 Each request sends: the fixed instructions, your current folder path, the names of the files
 in it (two levels deep, up to 80), and the request. File contents are never sent.
 
-`fa --reconhecer` is optional and makes answers much better: it records your distribution,
+`fa --scan` is optional and makes answers much better: it records your distribution,
 tools, network interfaces and running services once, in `~/.config/fa/sistema.txt`, and that
 file goes along with **every** request. It includes your hostname and local IP addresses. Read
 or edit it before using a provider you don't trust.
 
 ## Example packs
 
-`fa -r <request>` adds network examples to the request (`fa -h` lists the packs). A pack is a
+`fa -n <request>` adds network examples to the request (`fa -h` lists the packs). A pack is a
 text file of `request => command` lines with a `# flag: x` line. Put your own in
-`~/.config/fa/pacotes/`: they are the place to teach `fa` the hosts, interfaces and habits of
+`~/.config/fa/packs/`: they are the place to teach `fa` the hosts, interfaces and habits of
 your machine.
 
 ## Commands
 
 ```
 fa <request>              command on your prompt, Enter runs it
-fa -r <request>           with the network pack
-fa --instalar [provider]  set up shell, provider and test
+fa -n <request>           with the network pack
+fa --install [provider]   set up shell, provider and test
 fa --config key=value     change settings · fa --config shows them
-fa --testar               show what's in use and send a test request
-fa --reconhecer           read this machine once, for better answers
-fa --servico              keep pi open as a systemd user service (provider pi)
-fa --traduzir <request>   only print the command
-fa --agente               instructions for AI agents
+fa --test                 show what's in use and send a test request
+fa --scan                 read this machine once, for better answers
+fa --service              keep pi open as a systemd user service (provider pi)
+fa --translate <request>  only print the command
+fa --agent                instructions for AI agents
 ```
 
 ## Status
 
-Early (0.1.1). Tested on Fedora with bash; zsh support is written but not yet tested.
-Built-in instructions and messages are in Portuguese; requests work in any language. The
+Early (0.2.0). Tested on Fedora with bash; zsh support is written but not yet tested.
+Requests work in any language. Messages are in English, or in Portuguese when your system
+is. The 0.1 Portuguese option names (`--instalar`, `provedor=`...) still work. The
 tests are in [testes/](testes/).
 
 ## License
